@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אזרחות בקלות - הכנה לבגרות</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #3498db; --light: #f4f7f6; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--light); margin: 0; padding: 20px; color: var(--primary); }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; }
+        .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        button { background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #2980b9; transform: translateY(-2px); }
+        .hidden { display: none; }
+        .card { border: 3px solid var(--secondary); padding: 40px; border-radius: 15px; margin: 20px 0; cursor: pointer; text-align: center; font-size: 24px; background: #ecf0f1; min-height: 150px; display: flex; align-items: center; justify-content: center; }
+        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 10px; border-right: 5px solid var(--secondary); margin-bottom: 15px; text-align: right; }
+        .quiz-option { display: block; width: 100%; text-align: right; margin: 10px 0; background: #fff; color: var(--primary); border: 1px solid #ddd; }
+        .quiz-option:hover { background: #f0f0f0; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 onclick="showSection('main-menu')" style="cursor:pointer">🇮🇱 אזרחות בקלות</h1>
+    
+    <!-- תפריט ראשי -->
+    <div id="main-menu">
+        <p style="text-align:center">הכנה מקיפה לבגרות באזרחות</p>
+        <div class="menu">
+            <button onclick="showSection('summaries')">📖 סיכומי חומר</button>
+            <button onclick="showSection('flashcards-sec')">🃏 כרטיסיות (שינון)</button>
+            <button onclick="startQuiz(true)">📝 מבחן אמריקאי</button>
+            <button onclick="startQuiz(false)">✍️ מבחן פתוח</button>
+        </div>
+    </div>
+
+    <!-- סיכומים -->
+    <div id="summaries" class="hidden">
+        <h2>סיכומי חומר לבגרות</h2>
+        <div class="summary-box">
+            <strong>זכויות אדם (כח החש"ק):</strong> כבוד, חירות, הליך הוגן, חיים וביטחון, שוויון, קניין.
+        </div>
+        <div class="summary-box">
+            <strong>עקרונות הדמוקרטיה:</strong> שלטון העם, שלטון החוק, הכרעת הרוב, הגבלת השלטון, פלורליזם, סובלנות והסכמיות.
+        </div>
+        <div class="summary-box">
+            <strong>הכרזת העצמאות:</strong> הצדקות היסטוריות (קשר רציף לארץ), הצדקות בינלאומיות (החלטת האו"ם) והצדקה טבעית (זכות להגדרה עצמית).
+        </div>
+        <button onclick="showSection('main-menu')">חזרה לתפריט</button>
+    </div>
+
+    <!-- כרטיסיות -->
+    <div id="flashcards-sec" class="hidden">
+        <h2>כרטיסיות לשינון מושגים</h2>
+        <div id="flashcard" class="card" onclick="flipCard()">לחצו להתחלת שינון</div>
+        <button onclick="loadNextCard()">הבא</button>
+        <button onclick="showSection('main-menu')">חזרה</button>
+    </div>
+
+    <!-- מבחן -->
+    <div id="quiz-sec" class="hidden">
+        <h2 id="quiz-title">מבחן</h2>
+        <div id="quiz-container">
+            <p id="question-text" style="font-size: 20px; font-weight: bold;"></p>
+            <div id="options-container"></div>
+            <div id="open-answer-container" class="hidden">
+                <textarea id="open-answer" style="width:100%; height:100px; padding:10px;" placeholder="כתבו את תשובתכם כאן..."></textarea>
+                <button onclick="checkOpenAnswer()">בדוק תשובה</button>
+            </div>
+            <div id="feedback" class="feedback hidden"></div>
+            <div style="margin-top:20px;">
+                <button id="next-btn" class="hidden" onclick="loadQuestion()">שאלה הבאה</button>
+                <button id="retry-btn" class="hidden" onclick="restartQuiz(false)">מבחן חוזר (אותן שאלות)</button>
+                <button id="new-test-btn" class="hidden" onclick="restartQuiz(true)">עוד מבחן (שאלות שונות)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // מאגר נתונים מבוסס על המקורות
+    const database = [
+        { q: "מהי הבחנה מותרת?", a: "הענקת יחס שונה כאשר השונות רלוונטית לנושא.", opts: ["יחס שונה ללא סיבה", "יחס שונה בגלל שונות רלוונטית", "מתן הטבה לקבוצה מקופחת"], correct: 1 },
+        { q: "מהן הצדקות היסטוריות בהכרזה?", a: "השואה, התנ\"ך וקשר רציף של העם לארצו.", opts: ["החלטת האו\"ם", "זכות טבעית של כל עם", "השואה והקשר ההיסטורי לארץ"], correct: 2 },
+        { q: "מהו עקרון שלטון החוק?", a: "החוק עומד מעל כולם - גם האזרחים וגם השלטון.", opts: ["השלטון מעל החוק", "החוק עומד מעל כולם", "רק האזרחים חייבים לציית"], correct: 1 },
+        { q: "מהי הזכות לקניין?", a: "זכותו של אדם להחזיק ברכוש ללא חשש שיילקח ממנו.", opts: ["הזכות לעבוד", "הזכות להחזיק רכוש פרטי", "הזכות לשוויון"], correct: 1 }
+    ];
+
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let isAmerican = true;
+    let isFlipped = false;
+
+    function showSection(id) {
+        document.querySelectorAll('.container > div:not(h1)').forEach(d => d.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    // כרטיסיות
+    function loadNextCard() {
+        const item = database[Math.floor(Math.random() * database.length)];
+        const card = document.getElementById('flashcard');
+        card.innerText = "מושג: " + item.q;
+        card.dataset.answer = item.a;
+        isFlipped = false;
+    }
+
+    function flipCard() {
+        const card = document.getElementById('flashcard');
+        if (!isFlipped) { card.innerText = "תשובה: " + card.dataset.answer; isFlipped = true; }
+        else { card.innerText = "מושג: " + card.innerText.split(': ')[1]; isFlipped = false; }
+    }
+
+    // מבחן
+    function startQuiz(american, shuffle = true) {
+        isAmerican = american;
+        if (shuffle) {
+            currentQuestions = [...database].sort(() => Math.random() - 0.5);
+        }
+        currentIndex = 0;
+        showSection('quiz-sec');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentIndex >= currentQuestions.length) {
+            document.getElementById('question-text').innerText = "סיימת את המבחן!";
+            document.getElementById('options-container').innerHTML = "";
+            document.getElementById('open-answer-container').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('retry-btn').classList.remove('hidden');
+            document.getElementById('new-test-btn').classList.remove('hidden');
+            return;
+        }
+
+        const q = currentQuestions[currentIndex];
+        document.getElementById('question-text').innerText = q.q;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('retry-btn').classList.add('hidden');
+        document.getElementById('new-test-btn').classList.add('hidden');
+
+        if (isAmerican) {
+            document.getElementById('open-answer-container').classList.add('hidden');
+            const optsCont = document.getElementById('options-container');
+            optsCont.innerHTML = "";
+            q.opts.forEach((opt, idx) => {
+                const b = document.createElement('button');
+                b.className = "quiz-option";
+                b.innerText = opt;
+                b.onclick = () => checkAmerican(idx);
+                optsCont.appendChild(b);
+            });
+        } else {
+            document.getElementById('options-container').innerHTML = "";
+            document.getElementById('open-answer-container').classList.remove('hidden');
+            document.getElementById('open-answer').value = "";
+        }
+    }
+
+    function checkAmerican(idx) {
+        const q = currentQuestions[currentIndex];
+        const feed = document.getElementById('feedback');
+        feed.classList.remove('hidden');
+        if (idx === q.correct) {
+            feed.innerText = "נכון מאוד! " + q.a;
+            feed.style.color = "green";
+        } else {
+            feed.innerText = "לא מדויק. התשובה הנכונה היא: " + q.opts[q.correct] + ". הסבר: " + q.a;
+            feed.style.color = "red";
+        }
+        currentIndex++;
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function checkOpenAnswer() {
+        const q = currentQuestions[currentIndex];
+        const feed = document.getElementById('feedback');
+        feed.classList.remove('hidden');
+        feed.innerText = "השוו את תשובתכם לתשובה המקצועית: " + q.a;
+        feed.style.color = "blue";
+        currentIndex++;
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function restartQuiz(isNew) {
+        startQuiz(isAmerican, isNew);
+    }
+</script>
+
+</body>
+</html>
