@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לומדת אזרחות - סוגי דמוקרטיה וזכויות</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #27ae60; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; line-height: 1.6; text-align: right; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1, h2 { color: var(--primary); text-align: center; border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        .menu { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 25px; }
+        button { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 16px; }
+        button:hover { background: var(--accent); transform: scale(1.05); }
+        .hidden { display: none; }
+        .summary-box { background: #fff; border-right: 5px solid var(--accent); padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .type-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .type-table th, .type-table td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        .type-table th { background-color: #f8f9fa; }
+        .quiz-option { display: block; width: 100%; text-align: right; background: #f1f2f6; margin: 8px 0; border: 1px solid #ddd; padding: 10px; cursor: pointer; }
+        .feedback { padding: 15px; border-radius: 5px; margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🇮🇱 סיכומי אזרחות ומבחנים</h1>
+    
+    <div class="menu">
+        <button onclick="showPage('home')">בית</button>
+        <button onclick="showPage('demo-types')">⏱️ סוגי דמוקרטיה</button>
+        <button onclick="showPage('rights-summary')">⚖️ זכויות וערכים</button>
+        <button onclick="startQuiz(true)">📝 מבחן אמריקאי</button>
+        <button onclick="startQuiz(false)">✍️ מבחן פתוח</button>
+    </div>
+
+    <!-- דף הבית -->
+    <div id="home">
+        <p style="text-align:center;">כל חומר הלימוד מהדפים ששלחת מאורגן במקום אחד.</p>
+        <div style="background: #e8f6ef; padding: 20px; border-radius: 10px; text-align: center;">
+            <strong>טיפ ללמידה:</strong> התחילו בסיכום ה"שעון" של סוגי הדמוקרטיה כדי להבין את ההבדלים בין ערכי החירות לערכי הקהילה.
+        </div>
+    </div>
+
+    <!-- דף סוגי דמוקרטיה (ה"שעון") -->
+    <div id="demo-types" class="hidden">
+        <h2>סיכום "שעון" סוגי הדמוקרטיה</h2>
+        <div class="summary-box">
+            <p>המודלים נבדלים זה מזה בדגש שהם נותנים לפרט לעומת הכלל:</p>
+            <table class="type-table">
+                <thead>
+                    <tr>
+                        <th>המודל</th>
+                        <th>הדגש המרכזי</th>
+                        <th>תפקיד המדינה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>דמוקרטיה ליברלית</strong></td>
+                        <td>הפרט וזכויותיו.</td>
+                        <td>ניטרלית, מגנה על חירות הפרט ללא קשר לזהות לאומית.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>דמוקרטיה רפובליקנית</strong></td>
+                        <td>טובת הכלל והקהילה.</td>
+                        <td>טיפוח זהות לאומית משותפת והשתתפות אזרחית.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>דמוקרטיה רב-תרבותית</strong></td>
+                        <td>קבוצות תרבותיות.</td>
+                        <td>תמיכה ושימור של זהויות תרבותיות שונות במרחב הציבורי.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- דף זכויות וערכים -->
+    <div id="rights-summary" class="hidden">
+        <h2>זכויות אדם ועקרונות יסוד</h2>
+        <div class="summary-box">
+            <h3>זכויות טבעיות (כ"ח החש"ק):</h3>
+            <ul>
+                <li><strong>כבוד:</strong> הגנה מפני יחס משפיל (כולל פרטיות ושם טוב).</li>
+                <li><strong>חירות:</strong> זכותו של אדם לבחור את דרכו (ביטוי, דת, תנועה).</li>
+                <li><strong>הליך הוגן:</strong> הגנה משפטית מרגע החשד ועד גזר הדין.</li>
+                <li><strong>חיים וביטחון:</strong> הגנה על הגוף והנפש.</li>
+                <li><strong>שוויון:</strong> יחס זהה לכל אדם.</li>
+                <li><strong>קניין:</strong> שמירה על רכוש פרטי.</li>
+            </ul>
+        </div>
+        <div class="summary-box">
+            <h3>הבחנה מול אפליה:</h3>
+            <ul>
+                <li><strong>הבחנה מותרת:</strong> יחס שונה בגלל סיבה רלוונטית (למשל: נכות).</li>
+                <li><strong>אפליה פסולה:</strong> יחס שונה ללא סיבה מוצדקת.</li>
+                <li><strong>העדפה מתקנת:</strong> הטבה זמנית לקבוצה מקופחת.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- דף מבחן -->
+    <div id="quiz" class="hidden">
+        <h2 id="quiz-title">מבחן תרגול</h2>
+        <div id="quiz-content">
+            <p id="q-text" style="font-size: 20px; font-weight: bold;"></p>
+            <div id="options"></div>
+            <textarea id="open-ans" class="hidden" style="width:100%; height:80px;"></textarea>
+            <div id="feedback" class="feedback hidden"></div>
+            <button id="check-btn" class="hidden" onclick="checkAnswer()">בדוק תשובה</button>
+            <button id="next-q" class="hidden" onclick="loadQuestion()">השאלה הבאה</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "באיזה מודל דמוקרטי המדינה נתפסת כניטרלית ומתמקדת בפרט?", a: "דמוקרטיה ליברלית.", opts: ["רפובליקנית", "ליברלית", "רב-תרבותית"], c: 1 },
+        { q: "מהו הדגש המרכזי בדמוקרטיה רפובליקנית?", a: "טובת הכלל והקהילה הלאומית.", opts: ["זכויות הפרט בלבד", "טובת הכלל והקהילה", "ביטול שלטון החוק"], c: 1 },
+        { q: "איזו זכות כוללת הגנה מפני פרסום מידע שקרי ופוגע?", a: "הזכות לשם טוב (כחלק מהזכות לכבוד).", opts: ["פרטיות", "שם טוב", "חירות המחשבה"], c: 1 },
+        { q: "הסבר את ההבדל בין הבחנה מותרת לאפליה פסולה.", a: "הבחנה מותרת מבוססת על שונות רלוונטית לנושא, בעוד אפליה היא יחס שונה ללא סיבה מוצדקת.", opts: null },
+        { q: "מהן שלוש ההצדקות להקמת המדינה בהכרזת העצמאות?", a: "הצדקה היסטורית, בינלאומית וטבעית.", opts: ["היסטורית, דתית, צבאית", "היסטורית, בינלאומית, טבעית", "כלכלית, חברתית, משפטית"], c: 1 }
+    ];
+
+    let currentIdx = 0, isAmericanMode = true, shuffled = [];
+
+    function showPage(id) {
+        document.querySelectorAll('.container > div:not(.menu)').forEach(d => d.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function startQuiz(american) {
+        isAmericanMode = american;
+        shuffled = [...questions].sort(() => Math.random() - 0.5);
+        currentIdx = 0;
+        showPage('quiz');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentIdx >= shuffled.length) {
+            document.getElementById('quiz-content').innerHTML = "<h3>סיימת את המבחן בהצלחה!</h3><button onclick='location.reload()'>חזרה להתחלה</button>";
+            return;
+        }
+        const q = shuffled[currentIdx];
+        document.getElementById('q-text').innerText = q.q;
+        document.getElementById('feedback').classList.add('hidden');
+        document.getElementById('next-q').classList.add('hidden');
+        
+        const optsDiv = document.getElementById('options');
+        const openArea = document.getElementById('open-ans');
+        optsDiv.innerHTML = "";
+        
+        if (isAmericanMode && q.opts) {
+            openArea.classList.add('hidden');
+            document.getElementById('check-btn').classList.add('hidden');
+            q.opts.forEach((o, i) => {
+                const b = document.createElement('button');
+                b.className = "quiz-option";
+                b.innerText = o;
+                b.onclick = () => {
+                    const f = document.getElementById('feedback');
+                    f.classList.remove('hidden');
+                    f.innerText = (i === q.c) ? "נכון! " + q.a : "לא נכון. התשובה הנכונה: " + q.opts[q.c];
+                    f.style.color = (i === q.c) ? "green" : "red";
+                    document.getElementById('next-q').classList.remove('hidden');
+                };
+                optsDiv.appendChild(b);
+            });
+        } else {
+            openArea.classList.remove('hidden');
+            openArea.value = "";
+            document.getElementById('check-btn').classList.remove('hidden');
+        }
+    }
+
+    function checkAnswer() {
+        const q = shuffled[currentIdx];
+        const f = document.getElementById('feedback');
+        f.classList.remove('hidden');
+        f.innerText = "השווה את תשובתך לסיכום המקצועי: " + q.a;
+        f.style.color = "blue";
+        document.getElementById('next-q').classList.remove('hidden');
+        currentIdx++;
+    }
+</script>
+</body>
+</html>
